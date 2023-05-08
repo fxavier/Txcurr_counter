@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <style>
+        .container {
+            background-color: #e32636;
+        }
+
+        p {
+            text-align: center;
+        }
+    </style>
+    <title>ECHO TX CURR Counter Test Page</title>
+</head>
+
+<body onload="load()">
+    <div class="text-center">
+        <h1 class="fs-1 fw-bold">ECHO TX CURR Counter Page</h1>
+        <h2 class="fs-1 fw-bold" style="color: #e32636;">How we are reaching our TX CURR target</h2>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <p id='0101' class="fs-2 text-light">0</p>
+                <p class="text-light">ECHO TX CURR</p>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        async function fetchData() {
+            const response = await fetch('/fetch-data');
+            const data = await response.json();
+            return data;
+        }
+
+        function animate(obj, initVal, lastVal, duration) {
+            let startTime = null;
+
+            const step = (currentTime) => {
+                if (!startTime) {
+                    startTime = currentTime;
+                }
+
+                const progress = Math.min((currentTime - startTime) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (lastVal - initVal) + initVal);
+
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    window.cancelAnimationFrame(window.requestAnimationFrame(step));
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        const load = async () => {
+            const text1 = document.getElementById('0101');
+            const value = await fetchData();
+            animate(text1, 0, value, 7000);
+        }
+
+        document.addEventListener('DOMContentLoaded', load);
+    </script>
+
+
+</body>
+
+</html>
