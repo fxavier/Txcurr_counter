@@ -2,6 +2,9 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -13,16 +16,10 @@ const app = express();
 
 app.use(express.static(path.join(__dirname)));
 
-const getCurrentPeriod = () => {
-	const currentDate = new Date();
-	const year = currentDate.getFullYear();
-	const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-	return `${year}${month}`;
-};
 app.get("/fetch-data", async (req, res) => {
-	const dhis2Url = "https://dhis2.echomoz.org";
-	const username = "xnhagumbe";
-	const password = "Go$btgo1";
+	const dhis2Url = process.env.DHIS2_URL;
+	const username = process.env.DHIS2_USERNAME;
+	const password = process.env.DHIS2_PASSWORD;
 	const indicatorId = "DdzG2THhOPv";
 	let period = req.query.period || "";
 
@@ -58,8 +55,6 @@ app.get("/fetch-data", async (req, res) => {
 		res.status(500).json({ message: error.message });
 	}
 });
-
-//	res.json(data.rows[0][2]);
 
 app.listen(5000, () => {
 	console.log("Server running at http://localhost:5000");
