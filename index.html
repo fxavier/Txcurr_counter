@@ -22,13 +22,14 @@
 <body onload="load()">
     <div class="text-center">
         <h1 class="fs-1 fw-bold">ECHO TX CURR Counter Page</h1>
-        <h2 class="fs-1 fw-bold" style="color: #e32636;">How we are reaching our TX CURR target</h2>
+        <h1 class="fs-1 fw-bold"><img src="echo.png" width="600" height="227" alt="" /></h1>
+        <h2 class="fs-1 fw-bold" style="color: #e32636;">Estamos alcançando nossa meta de 400,000</h2>
     </div>
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                <p id='0101' class="fs-2 text-light">0</p>
-                <p class="text-light">ECHO TX CURR</p>
+                <p id='0101' class="fs-2 text-light">190477</p>
+                <p class="text-light">Pacientes em Tratamento</p>
             </div>
         </div>
 
@@ -63,7 +64,7 @@
         const load = async () => {
             const text1 = document.getElementById('0101');
             const value = await fetchData();
-            animate(text1, 0, value, 7000);
+            animate(text1, 190477, value, 7000);
         }
 
         document.addEventListener('DOMContentLoaded', load);
